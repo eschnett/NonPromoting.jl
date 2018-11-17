@@ -3,7 +3,7 @@ using NonPromoting
 
 # Create and examine from floating types
 for T in [Float16, Float32, Float64, BigFloat]
-    for x in T[1//3, 0//1, -3//2]
+    for x in T[1//3, 0//1, -3//2, pi]
         y1 = NP{T}(x)
         r1 = convert(T, y1)
         @test isequal(r1, x)
@@ -75,5 +75,18 @@ for fun in [:(-), :(/), :(\), :(^),
             @test_throws Union{ErrorException, MethodError} (x1 + y2)
             @test_throws Union{ErrorException, MethodError} (y1 + x2)
         end
+    end
+end
+
+# Check output
+for T in [Float16, Float32, Float64, BigFloat]
+    for x in T[1//3, 0//1, -3//2, pi]
+        buf1 = IOBuffer()
+        buf2 = IOBuffer()
+        show(buf1, NP(x))
+        show(buf2, x)
+        str1 = String(take!(buf1))
+        str2 = String(take!(buf2))
+        @test str1 == str2
     end
 end
