@@ -8,6 +8,7 @@ end
 
 NP{T}(x::I) where {T <: AbstractFloat, I <: Integer} = NP{T}(T(x))
 NP{T}(x::Rational{I}) where {T <: AbstractFloat, I <: Integer} = NP{T}(T(x))
+NP{T}(x::Irrational{I}) where {T <: AbstractFloat, I} = NP{T}(T(x))
 NP(x::T) where {T <: AbstractFloat} = NP{T}(x)
 
 function Base.convert(::Type{T}, x::NP{T})::T where {T <: AbstractFloat}
