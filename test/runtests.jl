@@ -37,6 +37,21 @@ for T in [Float16, Float32, Float64, BigFloat]
     end
 end
 
+# Ensure that operations on NP again return NP
+for T in [Float16, Float32, Float64, BigFloat]
+    for fun in [one, zero]
+        @test typeof(fun(NP{T})) === NP{T}
+    end
+
+    for fun in [+, -, abs, sign]
+        @test typeof(fun(NP{T}(1))) === NP{T}
+    end
+
+    for fun in [+, -, *, /, hypot]
+        @test typeof(fun(NP{T}(1), NP{T}(2))) === NP{T}
+    end
+end
+
 # Ensure binary functions don't promote
 for fun in [:(-), :(/), :(\), :(^),
             :atan, :copysign, :hypot, :modf, :rem,
@@ -44,8 +59,6 @@ for fun in [:(-), :(/), :(\), :(^),
             :(+), :(*), :max, :min]
     for T1 in [Float16, Float32, Float64, BigFloat]
         for T2 in [Float16, Float32, Float64, BigFloat]
-            @show T1 T2
-
             x1 = T1(1)
             x2 = T2(2)
             x3 = T1(3)
