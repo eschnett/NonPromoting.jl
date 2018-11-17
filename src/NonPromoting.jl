@@ -28,7 +28,7 @@ Base.promote_rule(::Type, ::Type{NP{T}}) where {T} = error
 # Nullary functions (which take a type as argument)
 for fun in [:one, :zero]
     @eval begin
-        function Base.$fun(::Type{T})::NP{T} where {T <: AbstractFloat}
+        function Base.$fun(::Type{NP{T}})::NP{T} where {T <: AbstractFloat}
             NP{T}($fun(T))
         end
     end
